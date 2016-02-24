@@ -1,20 +1,17 @@
 package fr.wascar.ForgeAuth.event;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import fr.wascar.ForgeAuth.ForgeAuth;
-
 import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
-
 import fr.wascar.ForgeAuth.network.Packet250CustomPayload;
 import net.minecraft.entity.player.EntityPlayerMP;
-import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedOutEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 
 public class onPlayerJoin {
 
 	@SubscribeEvent
-	public void onPlayerLogin(PlayerLoggedInEvent event)
+	public void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event)
 	{
 		if (!ForgeAuth.modEnabled) {
 			ForgeAuth.print("No login, mod disabled");
@@ -42,12 +39,17 @@ public class onPlayerJoin {
             Packet250CustomPayload packet = new Packet250CustomPayload();
             packet.data = bos.toByteArray();
             packet.length = bos.size();
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             ForgeAuth.network.sendTo(packet, (EntityPlayerMP) event.player);
         }
 	}
 
 	@SubscribeEvent
-	public void onPlayerLogout(PlayerLoggedOutEvent event) {
+	public void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
 		ForgeAuth.players.remove(event.player);
 	}
 
