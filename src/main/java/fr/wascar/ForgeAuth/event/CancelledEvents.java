@@ -1,5 +1,6 @@
 package fr.wascar.ForgeAuth.event;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import fr.wascar.ForgeAuth.ForgeAuth;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.event.CommandEvent;
@@ -12,7 +13,6 @@ import net.minecraftforge.event.entity.player.EntityInteractEvent;
 import net.minecraftforge.event.entity.player.EntityItemPickupEvent;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public class CancelledEvents {
 	@SubscribeEvent

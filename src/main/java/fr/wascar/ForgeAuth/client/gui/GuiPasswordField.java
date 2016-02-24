@@ -5,7 +5,6 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.util.ChatAllowedCharacters;
 
 import org.lwjgl.opengl.GL11;
@@ -32,9 +31,9 @@ public class GuiPasswordField extends GuiTextField
 
   private int selectionEnd = 0;
 
-  public GuiPasswordField(int id, FontRenderer par1FontRenderer, int par2, int par3, int par4, int par5)
+  public GuiPasswordField(FontRenderer par1FontRenderer, int par2, int par3, int par4, int par5)
   {
-	super(id, par1FontRenderer, par2, par3, par4, par5);
+	super(par1FontRenderer, par2, par3, par4, par5);
     fontRenderer = par1FontRenderer;
     xPos = par2;
     yPos = par3;
@@ -76,7 +75,7 @@ public class GuiPasswordField extends GuiTextField
   public void writeText(String par1Str)
   {
     String var2 = "";
-    String var3 = ChatAllowedCharacters.filterAllowedCharacters(par1Str);
+    String var3 = ChatAllowedCharacters.filerAllowedCharacters(par1Str);
     int var4 = cursorPosition < selectionEnd ? cursorPosition : selectionEnd;
     int var5 = cursorPosition < selectionEnd ? selectionEnd : cursorPosition;
     int var6 = maxStringLength - text.length() - (var4 - selectionEnd);
@@ -419,7 +418,7 @@ public class GuiPasswordField extends GuiTextField
 
       if (var4.length() > 0)
       {
-        var9 = fontRenderer.drawString(text.replaceAll("(?s).", "*"), var7, var8, var1);
+        var9 = fontRenderer.drawStringWithShadow(text.replaceAll("(?s).", "*"), var7, var8, var1);
       }
 
       boolean var13 = (cursorPosition < text.length()) || (text.length() >= getMaxStringLength());
@@ -437,7 +436,7 @@ public class GuiPasswordField extends GuiTextField
 
       if ((var4.length() > 0) && (var5) && (var2 < var4.length()))
       {
-        fontRenderer.drawString(var4.substring(var2), var9, var8, var1);
+        fontRenderer.drawStringWithShadow(var4.substring(var2), var9, var8, var1);
       }
 
       if (var6)
@@ -448,7 +447,7 @@ public class GuiPasswordField extends GuiTextField
         }
         else
         {
-          fontRenderer.drawString("_", var11, var8, var1);
+          fontRenderer.drawStringWithShadow("_", var11, var8, var1);
         }
       }
 
@@ -476,17 +475,16 @@ public class GuiPasswordField extends GuiTextField
       par4 = var5;
     }
 
-    Tessellator var6 = Tessellator.getInstance();
-    WorldRenderer wr = var6.getWorldRenderer();
+    Tessellator var6 = Tessellator.instance;
     GL11.glColor4f(0.0F, 0.0F, 255.0F, 255.0F);
     GL11.glDisable(3553);
     GL11.glEnable(3058);
     GL11.glLogicOp(5387);
-    wr.startDrawingQuads();
-    wr.addVertex(par1, par4, 0.0D);
-    wr.addVertex(par3, par4, 0.0D);
-    wr.addVertex(par3, par2, 0.0D);
-    wr.addVertex(par1, par2, 0.0D);
+    var6.startDrawingQuads();
+    var6.addVertex(par1, par4, 0.0D);
+    var6.addVertex(par3, par4, 0.0D);
+    var6.addVertex(par3, par2, 0.0D);
+    var6.addVertex(par1, par2, 0.0D);
     var6.draw();
     GL11.glDisable(3058);
     GL11.glEnable(3553);

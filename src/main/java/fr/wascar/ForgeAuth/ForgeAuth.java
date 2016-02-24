@@ -1,21 +1,23 @@
 package fr.wascar.ForgeAuth;
 
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.*;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import fr.wascar.ForgeAuth.command.Command;
 import fr.wascar.ForgeAuth.proxy.CommonProxy;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fml.common.FMLLog;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.*;
-import net.minecraftforge.fml.common.network.NetworkRegistry;
-import net.minecraftforge.fml.common.network.simpleimpl.SimpleNetworkWrapper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.logging.log4j.Level;
+
 import java.io.*;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -37,7 +39,7 @@ public class ForgeAuth {
 
     public static SimpleNetworkWrapper network;
 
-    @Mod.Instance("ForgeAuth")
+    @Instance("ForgeAuth")
     public static ForgeAuth instance;
 
     @SidedProxy(clientSide = "fr.wascar.ForgeAuth.proxy.ClientProxy", serverSide = "fr.wascar.ForgeAuth.proxy.CommonProxy")
@@ -63,7 +65,7 @@ public class ForgeAuth {
     }
 
     public static boolean hasPass(EntityPlayer pl) {
-        String username = pl.getDisplayNameString();
+        String username = pl.getDisplayName();
         File playerFile = new File(userfolder, username);
         if (playerFile.exists()) {
             if (readPlayer(username).isEmpty()) {
@@ -78,10 +80,10 @@ public class ForgeAuth {
     }
 
     public static boolean checkPass(EntityPlayer pl, String passwd) {
-        String username = pl.getDisplayNameString();
+        String username = pl.getDisplayName();
         File playerFile = new File(userfolder, username);
         if (playerFile.exists()) {
-            String savedPass = readPlayer(pl.getDisplayNameString());
+            String savedPass = readPlayer(pl.getDisplayName());
             if (savedPass.equals(passwd)) {
                 print("Password correct: ");
                 print(passwd);
@@ -99,7 +101,7 @@ public class ForgeAuth {
 
     public static boolean savePlayer(EntityPlayer pl, String pass) {
         ForgeAuth.print("Saving player password");
-        return saveFile(new File(userfolder, pl.getDisplayNameString()), pass);
+        return saveFile(new File(userfolder, pl.getDisplayName()), pass);
     }
 
     public static boolean saveFile(File f, String str) {
